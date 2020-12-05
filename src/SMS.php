@@ -150,8 +150,6 @@ class SMS
             $summary .= $value;
         }
         $summary .= $this->config('private_key');
-        //var_dump($summary);exit;
-
 
         return md5($summary);
     }
