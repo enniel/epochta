@@ -88,7 +88,7 @@ class SMS
     public function __construct(array $config = [])
     {
         $this->httpClient = new Client([
-            'base_uri' => self::HOST.'/'.self::VERSION . '/',
+            'base_uri' => self::HOST.'/'.self::VERSION.'/',
         ]);
 
         $this->config = $config;
