@@ -89,7 +89,6 @@ class SMS
     {
         $this->httpClient = new Client([
             'base_uri' => self::HOST.'/'.self::VERSION . '/',
-            'debug' => true,
         ]);
 
         $this->config = $config;
