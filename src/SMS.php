@@ -4,12 +4,12 @@ namespace Enniel\Epochta;
 
 use BadMethodCallException;
 use GuzzleHttp\Client;
-use GuzzleHttp\UriTemplate;
+use GuzzleHttp\RequestOptions;
 
 class SMS
 {
-    const HOST = 'http://atompark.com/api/sms';
-    const VERSION = '3.0';
+    private const HOST = 'http://atompark.com/api/sms';
+    private const VERSION = '3.0';
 
     /**
      * Actions.
@@ -76,12 +76,21 @@ class SMS
     protected $config = [];
 
     /**
+     * @var Client
+     */
+    protected $httpClient;
+
+    /**
      * Constructor.
      *
      * @param array $config
      */
     public function __construct(array $config = [])
     {
+        $this->httpClient = new Client([
+            'base_uri' => self::HOST.'/'.self::VERSION.'/',
+        ]);
+
         $this->config = $config;
     }
 
@@ -119,14 +128,10 @@ class SMS
             'action'  => $action,
             'version' => self::VERSION,
         ]));
-        $uri = (new UriTemplate())->expand(self::HOST.'{/segments*}{?parameters*}', [
-            'segments'   => [
-                self::VERSION, $action,
-            ],
-            'parameters' => $parameters,
-        ]);
 
-        return (new Client())->get($uri);
+        return $this->httpClient->get($action, [
+            RequestOptions::QUERY => $parameters,
+        ]);
     }
 
     /**
